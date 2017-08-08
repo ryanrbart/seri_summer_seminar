@@ -61,7 +61,7 @@ input_def_list <- list(
   list(input_hdr_list$stratum_def[2], "pspread_loss_rel", c(1)),
   list(input_hdr_list$stratum_def[2], "vapor_loss_rel", c(1)),
   list(input_hdr_list$stratum_def[2], "biomass_loss_rel_k1", c(-10)),
-  list(input_hdr_list$stratum_def[2], "biomass_loss_rel_k2", c(0.75)),
+  list(input_hdr_list$stratum_def[2], "biomass_loss_rel_k2", c(1)),
   # -----
   # Upper canopy parameters
   list(input_hdr_list$stratum_def[1], "epc.height_to_stem_exp", c(0.57)),
@@ -72,7 +72,7 @@ input_def_list <- list(
   list(input_hdr_list$stratum_def[1], "pspread_loss_rel", c(1)),
   list(input_hdr_list$stratum_def[1], "vapor_loss_rel", c(1)),
   list(input_hdr_list$stratum_def[1], "biomass_loss_rel_k1", c(-10)),
-  list(input_hdr_list$stratum_def[1], "biomass_loss_rel_k2", c(0.75))
+  list(input_hdr_list$stratum_def[1], "biomass_loss_rel_k2", c(1))
 )
 
 

@@ -61,7 +61,7 @@ input_def_list <- list(
   list(input_hdr_list$stratum_def[2], "pspread_loss_rel", c(1)),
   list(input_hdr_list$stratum_def[2], "vapor_loss_rel", c(1)),
   list(input_hdr_list$stratum_def[2], "biomass_loss_rel_k1", c(-10)),
-  list(input_hdr_list$stratum_def[2], "biomass_loss_rel_k2", c(0.75)),
+  list(input_hdr_list$stratum_def[2], "biomass_loss_rel_k2", c(1)),
   # -----
   # Upper canopy parameters
   list(input_hdr_list$stratum_def[1], "epc.height_to_stem_exp", c(0.57)),
@@ -72,7 +72,7 @@ input_def_list <- list(
   list(input_hdr_list$stratum_def[1], "pspread_loss_rel", c(1)),
   list(input_hdr_list$stratum_def[1], "vapor_loss_rel", c(1)),
   list(input_hdr_list$stratum_def[1], "biomass_loss_rel_k1", c(-10)),
-  list(input_hdr_list$stratum_def[1], "biomass_loss_rel_k2", c(0.75))
+  list(input_hdr_list$stratum_def[1], "biomass_loss_rel_k2", c(1))
 )
 
 
@@ -99,7 +99,7 @@ input_standard_par_list <- list(
 input_tec_data <- data.frame(year=integer(),month=integer(),day=integer(),hour=integer(),name=character(),stringsAsFactors=FALSE)
 input_tec_data[1,] <- data.frame(1941, 10, 1, 1, "print_daily_on", stringsAsFactors=FALSE)
 input_tec_data[2,] <- data.frame(1941, 10, 1, 2, "print_daily_growth_on", stringsAsFactors=FALSE)
-#input_tec_data[3,] <- data.frame(2020, 10, 1, 1, "output_current_state", stringsAsFactors=FALSE)
+input_tec_data[3,] <- data.frame(2020, 10, 1, 1, "output_current_state", stringsAsFactors=FALSE)
 
 # List of lists containing variable of interest, location/name of awk file (relative to output
 # file location), and the location/name of rhessys output file with variable of interest.
