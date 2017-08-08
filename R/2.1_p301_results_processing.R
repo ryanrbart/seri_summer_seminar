@@ -12,7 +12,7 @@ source("R/0.1_utilities.R")
 # P301 coupled model data processing
 
 input_files <- c("ws_p301/out/1.1_p301",
-                "ws_p301/out/1.3_p301")
+                 "ws_p301/out/1.2_p301")
 
 bd_list <- list()
 bdg_list <- list()
@@ -22,7 +22,7 @@ cd_list <- list()
 cdg_list <- list()
 
 for (aa in seq_along(input_files)){
-  results <- readin_rhessys_output(input_files[aa], b=1, p=1, c=1, g=1)
+  results <- readin_rhessys_output(input_files[aa], b=1, p=0, c=1, g=1)
   bd_list[[aa]] <- results$bd 
   bdg_list[[aa]] <- results$bdg
   pd_list[[aa]] <- results$pd
@@ -31,30 +31,35 @@ for (aa in seq_along(input_files)){
   cdg_list[[aa]] <- separate_canopy_output(results$cdg, 2)
 }
 
-bd <- bind_rows(bd_list, .id="run")
-bdg <- bind_rows(bdg_list, .id="run")
-pd <- bind_rows(pd_list, .id="run")
-pdg <- bind_rows(pdg_list, .id="run")
-cd <- bind_rows(cd_list, .id="run")
-cdg <- bind_rows(cdg_list, .id="run")
+bd <- bind_rows(bd_list, .id="scenario")
+bdg <- bind_rows(bdg_list, .id="scenario")
+pd <- bind_rows(pd_list, .id="scenario")
+pdg <- bind_rows(pdg_list, .id="scenario")
+cd <- bind_rows(cd_list, .id="scenario")
+cdg <- bind_rows(cdg_list, .id="scenario")
 
 # ---------------------------------------------------------------------
 # Select and output variables
 
+bd <- dplyr::mutate(bd, photosyn = psn*1000)
+bd <- dplyr::mutate(bd, litter = litrc*1000)
 basin_results <- dplyr::select(bd,
                                date,
                                year,
                                month,
                                day,
                                wy,
-                               yd,
                                wyd,
-                               run,
+                               scenario,
+                               precip,
+                               tmax,
+                               tmin,
                                streamflow,
                                snowpack,
+                               pet,
                                et,
-                               psn,
-                               litrc)
+                               photosyn,
+                               litter)
 
 cd_select <- dplyr::select(cd,
                            date,
@@ -62,9 +67,8 @@ cd_select <- dplyr::select(cd,
                            month,
                            day,
                            wy,
-                           yd,
                            wyd,
-                           run,
+                           scenario,
                            canopy_layer,
                            height)
 
@@ -76,11 +80,13 @@ cdg_select <- dplyr::select(cdg,
 
 canopy_results <- bind_cols(cd_select,cdg_select)
 
+# Remove first 5 years (due to obvious (lack of) spinup errors with streamflow)
+basin_results <- dplyr::filter(basin_results, wy>1946)
+canopy_results <- dplyr::filter(canopy_results, wy>1946)
+
 write.table(basin_results, "outputs/basin_results.txt", quote=FALSE, row.names = FALSE)
 write.table(canopy_results, "outputs/canopy_results.txt", quote=FALSE, row.names = FALSE)
 
-
 # ---------------------------------------------------------------------
-
 
 
