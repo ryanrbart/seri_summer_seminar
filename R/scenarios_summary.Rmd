@@ -1,0 +1,150 @@
+---
+title: "SERI Fire Seminar - Initial Scenarios"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+RHESSys simulations were conducted on a 1 km^2^, mixed conifer watershed in the southern Sierra Nevada. The watershed has an elevation ranging from 1790 to 2115 m and is located at the rain/snow transition zone, with a snow fraction ranging from 35% to 60% of total precipitation. The watershed receives approximately 1320 mm of precipitation in an average year, mostly during the winter season. 
+
+Vegetation was modeled as having two canopies, an upper canopy representing conifers and a lower canopy representing understory vegetation (aka ladder fuels), which may be a mix of young trees, shrubs and other low stature vegetation. Each simulation began with vegetation growing from bare ground, which is analogous to starting the simulations after a stand-replacing fire. Although the model is distibuted and simulates ecohydrologic processes for different areas of the watershed, our analysis is restricted to basin level averages.
+
+Each simulation runs for 80-years, from 1941 to 2021. (The observed meteorogical data actually runs from 1941 to 2005, but the record repeats again starting in 2006). A moderate intensity wildfire occurs after 25 years (1966) and a high intensity wildfire occurs 35 years later in 2001. In the first, or baseline, senario, the watershed is only affected by the two wildfires. In the second scenario, a small fuels treatment is implemented in 1956 and 30% of the understory biomass is removed.
+
+**Scenario #1 (Baseline):**  
+* Start: Oct 1, 1941  
+* Fire: Aug 1, 1966  
+* Fire: Aug 1, 2001  
+* End: Sept 30, 2021  
+
+**Scenario #2 (Single fuel treatment):**  
+* Start: Oct 1, 1941  
+* Fuel treatment: Aug 1, 1956 (30% understory removal)  
+* Fire: Aug 1, 1966  
+* Fire: Aug 1, 2001  
+* End: Sept 30, 2021  
+
+## Model Outputs
+
+Each scenario in RHESSys produces a timeseries of output for a number of variables. These variables are provided in two text files. The file basin_results.txt contains all variables expect for canopy specific variables which are found in canopy_results.txt.    
+
+**basin_results.txt**  
+* date  
+* year  
+* month  
+* day  
+* wy - wateryear (Oct 1 to Sept 30)  
+* wyd - wateryear day  
+* scenario  
+* precip - Precipitation (mm)  
+* tmax - Max temperature (C)  
+* tmin - Min temperature (C)  
+* streamflow (mm)  
+* snowpack (mm)  
+* pet - Potential evapotranspiration (mm)  
+* et - Actual evapotranspiration (mm)  
+* photosyn - Photosynthesis (gC/m2)  
+* litter (gC/m2)  
+
+The file canopy_results.txt contains variables that the vegetation canopies. This file has an additional variable called canopy_layer that differentiates the upper and lower canopy for the watershed.
+
+**canopy_results.txt**  
+* date  
+* year  
+* month  
+* day  
+* wy - wateryear (Oct 1 to Sept 30)  
+* wyd - wateryear day  
+* scenario  
+* canopy_layer - Upper canopy (1) or Lower Canopy (2)  
+* Height (m)  
+* Above-ground Carbon (gC/m2)  
+* Below-ground Carbon (gC/m2)  
+
+## Potential Additional Scenarios
+
+There are a number of options for selecting additional scenarios for addressing your research question. Changes that are available include:  
+* Modifying the climate sequence (precipitation and/or temperature)  
+* Change the type of fuels treatments  (for example, overstory vs understory)  
+* Change the timing of fuels treatments  
+* Change the size of fuels treatments  
+
+
+## Analyze scenarios in R
+
+```{r libraries}
+library(ggplot2)
+library(dplyr)
+```
+
+Import data. (Note that you will need to change the path to your data)
+
+``` {r import}
+basin_results <- read.table("../outputs/basin_results.txt", header = T)
+canopy_results <- read.table("../outputs/canopy_results.txt", header = T)
+basin_results$date <- as.Date(basin_results$date)
+canopy_results$date <- as.Date(canopy_results$date)
+```
+
+Let's plot how streamflow differs between the two scenarios. Note that two scenarios are colored differently.
+
+``` {r streamflow}
+ggplot(basin_results) +
+  geom_line(aes(x=date, y=streamflow, color=as.factor(scenario)))
+```
+
+There is a lot of data, which makes it hard to evaluate. Let's group the data by wateryear.
+
+``` {r streamflow_wy}
+basin_results_groups <- dplyr::group_by(basin_results, wy, scenario)
+basin_results_wy <- dplyr::summarise(basin_results_groups,
+                                     streamflow_wy = sum(streamflow))
+ggplot(basin_results_wy) +
+  geom_line(aes(x=wy, y=streamflow_wy, color=as.factor(scenario)))
+```
+
+We can use a boxplot to easier compare annual streamflow between the two scenarios.
+
+``` {r boxplot_wy}
+basin_results_groups <- dplyr::group_by(basin_results, wy, scenario)
+basin_results_wy <- dplyr::summarise(basin_results_groups,
+                                     streamflow_wy = sum(streamflow))
+ggplot(basin_results_wy) +
+  geom_boxplot(aes(x=wy ,y=streamflow_wy, color=as.factor(scenario)))
+```
+
+Now lets see an example of simply plotting the first scenario instead of both scenarios.
+
+``` {r streamflow_wy_scenario_1}
+basin_results_scenario_1 <- dplyr::filter(basin_results, scenario==1)
+basin_results_groups <- dplyr::group_by(basin_results_scenario_1, wy, scenario)
+basin_results_wy <- dplyr::summarise(basin_results_groups,
+                                     streamflow_wy = sum(streamflow))
+ggplot(basin_results_wy) +
+  geom_line(aes(x=wy, y=streamflow_wy, color=as.factor(scenario)))
+```
+
+
+Now lets plot above-ground carbon for both scenarios. Since there are two canopies, we have to differentiate between the upper and lower canopy, in addition to scenarios.  
+
+``` {r above_ground_carbon}
+ggplot(canopy_results) +
+  geom_line(aes(x=date, y=above_ground_carbon, color=as.factor(scenario), linetype=as.factor(canopy_layer)))
+```
+
+And once-again, grouped by wateryear.
+
+``` {r above_ground_carbon_wy}
+canopy_results_groups <- dplyr::group_by(canopy_results, wy, scenario, canopy_layer)
+canopy_results_wy <- dplyr::summarise(canopy_results_groups,
+                                      above_ground_carbon_wy = mean(above_ground_carbon))
+ggplot(canopy_results_wy) +
+  geom_line(aes(x=wy, y=above_ground_carbon_wy, color=as.factor(scenario), linetype=as.factor(canopy_layer)))
+
+```
+
+
