@@ -10,9 +10,12 @@ source("R/0.1_utilities.R")
 
 # ---------------------------------------------------------------------
 # P301 coupled model data processing
-
 input_files <- c("ws_p301/out/1.1_p301",
-                 "ws_p301/out/1.2_p301")
+                 "ws_p301/out/1.2_p301",
+                 "ws_p301/out/1.3_p301",
+                 "ws_p301/out/1.4_p301",
+                 "ws_p301/out/1.5_p301",
+                 "ws_p301/out/1.6_p301")
 
 bd_list <- list()
 bdg_list <- list()
@@ -89,4 +92,5 @@ write.table(canopy_results, "outputs/canopy_results.txt", quote=FALSE, row.names
 
 # ---------------------------------------------------------------------
 
+beep(1)
 
