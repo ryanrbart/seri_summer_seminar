@@ -20,9 +20,9 @@ input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy.world"
 input_rhessys$world_hdr_prefix <- "p301_30m"
 input_rhessys$flow_file <- "ws_p301/flowtables/p301_30m.flow"
 input_rhessys$start_date <- "1941 10 1 1"
-input_rhessys$end_date <- "1950 8 2 1"
+input_rhessys$end_date <- "1968 8 1 1"
 input_rhessys$output_folder <- "ws_p301/out"
-input_rhessys$output_filename <- "1.3_p301_1"
+input_rhessys$output_filename <- "1.6_p301_1"
 input_rhessys$command_options <- c("-b -g -c 1 189 8081 8081")
 
 
@@ -102,13 +102,12 @@ input_standard_par_list <- list(
 input_tec_data <- data.frame(year=integer(),month=integer(),day=integer(),hour=integer(),name=character(),stringsAsFactors=FALSE)
 input_tec_data[1,] <- data.frame(1941, 10, 1, 1, "print_daily_on", stringsAsFactors=FALSE)
 input_tec_data[2,] <- data.frame(1941, 10, 1, 2, "print_daily_growth_on", stringsAsFactors=FALSE)
-input_tec_data[3,] <- data.frame(1950, 8, 1, 1, "output_current_state", stringsAsFactors=FALSE)
-input_tec_data[4,] <- data.frame(1960, 8, 1, 1, "output_current_state", stringsAsFactors=FALSE)
-input_tec_data[5,] <- data.frame(1970, 8, 1, 1, "output_current_state", stringsAsFactors=FALSE)
-input_tec_data[6,] <- data.frame(1980, 8, 1, 1, "output_current_state", stringsAsFactors=FALSE)
-input_tec_data[7,] <- data.frame(1990, 8, 1, 1, "output_current_state", stringsAsFactors=FALSE)
-input_tec_data[8,] <- data.frame(2000, 8, 1, 1, "output_current_state", stringsAsFactors=FALSE)
-input_tec_data[9,] <- data.frame(2010, 8, 1, 1, "output_current_state", stringsAsFactors=FALSE)
+input_tec_data[3,] <- data.frame(1968, 7, 31, 1, "output_current_state", stringsAsFactors=FALSE)
+input_tec_data[4,] <- data.frame(1973, 7, 31, 1, "output_current_state", stringsAsFactors=FALSE)
+input_tec_data[5,] <- data.frame(1978, 7, 31, 1, "output_current_state", stringsAsFactors=FALSE)
+input_tec_data[6,] <- data.frame(2003, 7, 31, 1, "output_current_state", stringsAsFactors=FALSE)
+input_tec_data[7,] <- data.frame(2008, 7, 31, 1, "output_current_state", stringsAsFactors=FALSE)
+input_tec_data[8,] <- data.frame(2013, 7, 31, 1, "output_current_state", stringsAsFactors=FALSE)
 
 # List of lists containing variable of interest, location/name of awk file (relative to output
 # file location), and the location/name of rhessys output file with variable of interest.
@@ -130,27 +129,18 @@ system.time(
 )
 
 # ---------------------------------------------------------------------
-# Apply a fuels treatment (1950)
+# Apply a fuels treatment (1968)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy.world.Y1950M8D1H1.state"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment1a.world"
+world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy.world.Y1968M7D31H1.state"
+world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment1.world"
 canopy_default_ID <- 7
-reduction_percent <- 10
+reduction_percent <- 8
 
 biomass_removal_by_canopy(world_name_in=world_name_in,
                           world_name_out=world_name_out,
                           canopy_default_ID=canopy_default_ID,
                           reduction_percent=reduction_percent)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment1a.world"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment1b.world"
-canopy_default_ID <- 50
-reduction_percent <- 100
-
-biomass_removal_by_canopy(world_name_in=world_name_in,
-                          world_name_out=world_name_out,
-                          canopy_default_ID=canopy_default_ID,
-                          reduction_percent=reduction_percent)
 
 # ---------------------------------------------------------------------
 # Run RHESSys after fuels treatment
@@ -160,13 +150,13 @@ biomass_removal_by_canopy(world_name_in=world_name_in,
 input_rhessys <- list()
 input_rhessys$rhessys_version <- "bin/rhessys5.20.1"
 input_rhessys$tec_file <- "ws_p301/tecfiles/p301_fire.tec"
-input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment1b.world"
+input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment1.world"
 input_rhessys$world_hdr_prefix <- "p301_30m"
 input_rhessys$flow_file <- "ws_p301/flowtables/p301_30m.flow"
-input_rhessys$start_date <- "1950 8 1 1"
-input_rhessys$end_date <- "1960 8 2 1"
+input_rhessys$start_date <- "1968 8 1 1"
+input_rhessys$end_date <- "1973 8 1 1"
 input_rhessys$output_folder <- "ws_p301/out"
-input_rhessys$output_filename <- "1.3_p301_2"
+input_rhessys$output_filename <- "1.6_p301_2"
 input_rhessys$command_options <- c("-b -g -c 1 189 8081 8081")
 
 
@@ -183,27 +173,19 @@ system.time(
 )
 
 # ---------------------------------------------------------------------
-# Apply a fuels treatment (1960)
+# Apply a fuels treatment (1973)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment1b.world.Y1960M8D1H1.state"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment2a.world"
+world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment1.world.Y1973M7D31H1.state"
+world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment2.world"
 canopy_default_ID <- 7
-reduction_percent <- 10
+reduction_percent <- 8
 
 biomass_removal_by_canopy(world_name_in=world_name_in,
                           world_name_out=world_name_out,
                           canopy_default_ID=canopy_default_ID,
                           reduction_percent=reduction_percent)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment2a.world"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment2b.world"
-canopy_default_ID <- 50
-reduction_percent <- 100
 
-biomass_removal_by_canopy(world_name_in=world_name_in,
-                          world_name_out=world_name_out,
-                          canopy_default_ID=canopy_default_ID,
-                          reduction_percent=reduction_percent)
 
 # ---------------------------------------------------------------------
 # Run RHESSys after fuels treatment
@@ -213,13 +195,13 @@ biomass_removal_by_canopy(world_name_in=world_name_in,
 input_rhessys <- list()
 input_rhessys$rhessys_version <- "bin/rhessys5.20.1"
 input_rhessys$tec_file <- "ws_p301/tecfiles/p301_fire.tec"
-input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment2b.world"
+input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment2.world"
 input_rhessys$world_hdr_prefix <- "p301_30m"
 input_rhessys$flow_file <- "ws_p301/flowtables/p301_30m.flow"
-input_rhessys$start_date <- "1960 8 1 1"
-input_rhessys$end_date <- "1970 8 2 1"
+input_rhessys$start_date <- "1973 8 1 1"
+input_rhessys$end_date <- "1978 8 1 1"
 input_rhessys$output_folder <- "ws_p301/out"
-input_rhessys$output_filename <- "1.3_p301_3"
+input_rhessys$output_filename <- "1.6_p301_3"
 input_rhessys$command_options <- c("-b -g -c 1 189 8081 8081")
 
 
@@ -237,27 +219,19 @@ system.time(
 
 
 # ---------------------------------------------------------------------
-# Apply a fuels treatment (1970)
+# Apply a fuels treatment (1978)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment2b.world.Y1970M8D1H1.state"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment3a.world"
+world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment2.world.Y1978M7D31H1.state"
+world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment3.world"
 canopy_default_ID <- 7
-reduction_percent <- 10
+reduction_percent <- 8
 
 biomass_removal_by_canopy(world_name_in=world_name_in,
                           world_name_out=world_name_out,
                           canopy_default_ID=canopy_default_ID,
                           reduction_percent=reduction_percent)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment3a.world"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment3b.world"
-canopy_default_ID <- 50
-reduction_percent <- 100
 
-biomass_removal_by_canopy(world_name_in=world_name_in,
-                          world_name_out=world_name_out,
-                          canopy_default_ID=canopy_default_ID,
-                          reduction_percent=reduction_percent)
 
 # ---------------------------------------------------------------------
 # Run RHESSys after fuels treatment
@@ -267,13 +241,13 @@ biomass_removal_by_canopy(world_name_in=world_name_in,
 input_rhessys <- list()
 input_rhessys$rhessys_version <- "bin/rhessys5.20.1"
 input_rhessys$tec_file <- "ws_p301/tecfiles/p301_fire.tec"
-input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment3b.world"
+input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment3.world"
 input_rhessys$world_hdr_prefix <- "p301_30m"
 input_rhessys$flow_file <- "ws_p301/flowtables/p301_30m.flow"
-input_rhessys$start_date <- "1970 8 1 1"
-input_rhessys$end_date <- "1980 8 2 1"
+input_rhessys$start_date <- "1978 8 1 1"
+input_rhessys$end_date <- "2003 8 1 1"
 input_rhessys$output_folder <- "ws_p301/out"
-input_rhessys$output_filename <- "1.3_p301_4"
+input_rhessys$output_filename <- "1.6_p301_4"
 input_rhessys$command_options <- c("-b -g -c 1 189 8081 8081")
 
 
@@ -290,27 +264,19 @@ system.time(
 )
 
 # ---------------------------------------------------------------------
-# Apply a fuels treatment (1980)
+# Apply a fuels treatment (2003)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment3b.world.Y1980M8D1H1.state"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment4a.world"
+world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment3.world.Y2003M7D31H1.state"
+world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment4.world"
 canopy_default_ID <- 7
-reduction_percent <- 10
+reduction_percent <- 8
 
 biomass_removal_by_canopy(world_name_in=world_name_in,
                           world_name_out=world_name_out,
                           canopy_default_ID=canopy_default_ID,
                           reduction_percent=reduction_percent)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment4a.world"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment4b.world"
-canopy_default_ID <- 50
-reduction_percent <- 100
 
-biomass_removal_by_canopy(world_name_in=world_name_in,
-                          world_name_out=world_name_out,
-                          canopy_default_ID=canopy_default_ID,
-                          reduction_percent=reduction_percent)
 
 # ---------------------------------------------------------------------
 # Run RHESSys after fuels treatment
@@ -320,13 +286,13 @@ biomass_removal_by_canopy(world_name_in=world_name_in,
 input_rhessys <- list()
 input_rhessys$rhessys_version <- "bin/rhessys5.20.1"
 input_rhessys$tec_file <- "ws_p301/tecfiles/p301_fire.tec"
-input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment4b.world"
+input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment4.world"
 input_rhessys$world_hdr_prefix <- "p301_30m"
 input_rhessys$flow_file <- "ws_p301/flowtables/p301_30m.flow"
-input_rhessys$start_date <- "1980 8 1 1"
-input_rhessys$end_date <- "1990 8 2 1"
+input_rhessys$start_date <- "2003 8 1 1"
+input_rhessys$end_date <- "2008 8 1 1"
 input_rhessys$output_folder <- "ws_p301/out"
-input_rhessys$output_filename <- "1.3_p301_5"
+input_rhessys$output_filename <- "1.6_p301_5"
 input_rhessys$command_options <- c("-b -g -c 1 189 8081 8081")
 
 
@@ -343,27 +309,19 @@ system.time(
 )
 
 # ---------------------------------------------------------------------
-# Apply a fuels treatment (1990)
+# Apply a fuels treatment (2008)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment4b.world.Y1990M8D1H1.state"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment5a.world"
+world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment4.world.Y2008M7D31H1.state"
+world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment5.world"
 canopy_default_ID <- 7
-reduction_percent <- 10
+reduction_percent <- 8
 
 biomass_removal_by_canopy(world_name_in=world_name_in,
                           world_name_out=world_name_out,
                           canopy_default_ID=canopy_default_ID,
                           reduction_percent=reduction_percent)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment5a.world"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment5b.world"
-canopy_default_ID <- 50
-reduction_percent <- 100
 
-biomass_removal_by_canopy(world_name_in=world_name_in,
-                          world_name_out=world_name_out,
-                          canopy_default_ID=canopy_default_ID,
-                          reduction_percent=reduction_percent)
 
 # ---------------------------------------------------------------------
 # Run RHESSys after fuels treatment
@@ -373,13 +331,13 @@ biomass_removal_by_canopy(world_name_in=world_name_in,
 input_rhessys <- list()
 input_rhessys$rhessys_version <- "bin/rhessys5.20.1"
 input_rhessys$tec_file <- "ws_p301/tecfiles/p301_fire.tec"
-input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment5b.world"
+input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment5.world"
 input_rhessys$world_hdr_prefix <- "p301_30m"
 input_rhessys$flow_file <- "ws_p301/flowtables/p301_30m.flow"
-input_rhessys$start_date <- "1990 8 1 1"
-input_rhessys$end_date <- "2000 8 2 1"
+input_rhessys$start_date <- "2008 8 1 1"
+input_rhessys$end_date <- "2013 8 1 1"
 input_rhessys$output_folder <- "ws_p301/out"
-input_rhessys$output_filename <- "1.3_p301_6"
+input_rhessys$output_filename <- "1.6_p301_6"
 input_rhessys$command_options <- c("-b -g -c 1 189 8081 8081")
 
 
@@ -396,27 +354,19 @@ system.time(
 )
 
 # ---------------------------------------------------------------------
-# Apply a fuels treatment (2000)
+# Apply a fuels treatment (2013)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment5b.world.Y2000M8D1H1.state"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment6a.world"
+world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment5.world.Y2013M7D31H1.state"
+world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment6.world"
 canopy_default_ID <- 7
-reduction_percent <- 10
+reduction_percent <- 8
 
 biomass_removal_by_canopy(world_name_in=world_name_in,
                           world_name_out=world_name_out,
                           canopy_default_ID=canopy_default_ID,
                           reduction_percent=reduction_percent)
 
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment6a.world"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment6b.world"
-canopy_default_ID <- 50
-reduction_percent <- 100
 
-biomass_removal_by_canopy(world_name_in=world_name_in,
-                          world_name_out=world_name_out,
-                          canopy_default_ID=canopy_default_ID,
-                          reduction_percent=reduction_percent)
 
 # ---------------------------------------------------------------------
 # Run RHESSys after fuels treatment
@@ -426,66 +376,13 @@ biomass_removal_by_canopy(world_name_in=world_name_in,
 input_rhessys <- list()
 input_rhessys$rhessys_version <- "bin/rhessys5.20.1"
 input_rhessys$tec_file <- "ws_p301/tecfiles/p301_fire.tec"
-input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment6b.world"
+input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario6_treatment6.world"
 input_rhessys$world_hdr_prefix <- "p301_30m"
 input_rhessys$flow_file <- "ws_p301/flowtables/p301_30m.flow"
-input_rhessys$start_date <- "2000 8 1 1"
-input_rhessys$end_date <- "2010 8 2 1"
-input_rhessys$output_folder <- "ws_p301/out"
-input_rhessys$output_filename <- "1.3_p301_7"
-input_rhessys$command_options <- c("-b -g -c 1 189 8081 8081")
-
-
-system.time(
-  run_rhessys(parameter_method = parameter_method,
-              input_rhessys = input_rhessys,
-              input_hdr_list = input_hdr_list,
-              input_preexisting_table = input_preexisting_table,
-              input_def_list = input_def_list,
-              input_standard_par_list = input_standard_par_list,
-              input_dated_seq_file = input_dated_seq_file,
-              input_tec_data = input_tec_data,
-              output_variables = output_variables)
-)
-
-# ---------------------------------------------------------------------
-# Apply a fuels treatment (2010)
-
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment6b.world.Y2010M8D1H1.state"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment7a.world"
-canopy_default_ID <- 7
-reduction_percent <- 10
-
-biomass_removal_by_canopy(world_name_in=world_name_in,
-                          world_name_out=world_name_out,
-                          canopy_default_ID=canopy_default_ID,
-                          reduction_percent=reduction_percent)
-
-world_name_in <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment7a.world"
-world_name_out <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment7b.world"
-canopy_default_ID <- 50
-reduction_percent <- 100
-
-biomass_removal_by_canopy(world_name_in=world_name_in,
-                          world_name_out=world_name_out,
-                          canopy_default_ID=canopy_default_ID,
-                          reduction_percent=reduction_percent)
-
-# ---------------------------------------------------------------------
-# Run RHESSys after fuels treatment
-
-
-# RHESSys Inputs
-input_rhessys <- list()
-input_rhessys$rhessys_version <- "bin/rhessys5.20.1"
-input_rhessys$tec_file <- "ws_p301/tecfiles/p301_fire.tec"
-input_rhessys$world_file <- "ws_p301/worldfiles/p301_30m_2canopy_scenario3_treatment7b.world"
-input_rhessys$world_hdr_prefix <- "p301_30m"
-input_rhessys$flow_file <- "ws_p301/flowtables/p301_30m.flow"
-input_rhessys$start_date <- "2010 8 1 1"
+input_rhessys$start_date <- "2013 8 1 1"
 input_rhessys$end_date <- "2021 10 1 1"
 input_rhessys$output_folder <- "ws_p301/out"
-input_rhessys$output_filename <- "1.3_p301_8"
+input_rhessys$output_filename <- "1.6_p301_7"
 input_rhessys$command_options <- c("-b -g -c 1 189 8081 8081")
 
 
@@ -500,84 +397,54 @@ system.time(
               input_tec_data = input_tec_data,
               output_variables = output_variables)
 )
+
 
 # ---------------------------------------------------------------------
 # Reassemble RHESSys output
 
-pre <- c("ws_p301/out/1.3_p301_1",
-         "ws_p301/out/1.3_p301_2",
-         "ws_p301/out/1.3_p301_3",
-         "ws_p301/out/1.3_p301_4",
-         "ws_p301/out/1.3_p301_5",
-         "ws_p301/out/1.3_p301_6",
-         "ws_p301/out/1.3_p301_7",
-         "ws_p301/out/1.3_p301_8")
+pre <- c("ws_p301/out/1.6_p301_1",
+         "ws_p301/out/1.6_p301_2",
+         "ws_p301/out/1.6_p301_3",
+         "ws_p301/out/1.6_p301_4",
+         "ws_p301/out/1.6_p301_5",
+         "ws_p301/out/1.6_p301_6",
+         "ws_p301/out/1.6_p301_7")
 
 # Basin
 tmp1 <- lapply(pre, function(x) sprintf("%s_basin.daily", x))
 tmp2 <- lapply(tmp1, function(x) read.table(x, header = T))
-tmp2[[1]] <- dplyr::slice(tmp2[[1]],1:(nrow(tmp2[[1]])-1)) # Remove 1 duplicate rows
-tmp2[[2]] <- dplyr::slice(tmp2[[2]],1:(nrow(tmp2[[2]])-1)) # Remove 1 duplicate rows
-tmp2[[3]] <- dplyr::slice(tmp2[[3]],1:(nrow(tmp2[[3]])-1)) # Remove 1 duplicate rows
-tmp2[[4]] <- dplyr::slice(tmp2[[4]],1:(nrow(tmp2[[4]])-1)) # Remove 1 duplicate rows
-tmp2[[5]] <- dplyr::slice(tmp2[[5]],1:(nrow(tmp2[[5]])-1)) # Remove 1 duplicate rows
-tmp2[[6]] <- dplyr::slice(tmp2[[6]],1:(nrow(tmp2[[6]])-1)) # Remove 1 duplicate rows
-tmp2[[7]] <- dplyr::slice(tmp2[[7]],1:(nrow(tmp2[[7]])-1)) # Remove 1 duplicate rows
 bd <- do.call(rbind, tmp2)
 
 # Basin grow
 tmp1 <- lapply(pre, function(x) sprintf("%s_grow_basin.daily", x))
 tmp2 <- lapply(tmp1, function(x) read.table(x, header = T))
-tmp2[[1]] <- dplyr::slice(tmp2[[1]],1:(nrow(tmp2[[1]])-1)) # Remove 1 duplicate rows
-tmp2[[2]] <- dplyr::slice(tmp2[[2]],1:(nrow(tmp2[[2]])-1)) # Remove 1 duplicate rows
-tmp2[[3]] <- dplyr::slice(tmp2[[3]],1:(nrow(tmp2[[3]])-1)) # Remove 1 duplicate rows
-tmp2[[4]] <- dplyr::slice(tmp2[[4]],1:(nrow(tmp2[[4]])-1)) # Remove 1 duplicate rows
-tmp2[[5]] <- dplyr::slice(tmp2[[5]],1:(nrow(tmp2[[5]])-1)) # Remove 1 duplicate rows
-tmp2[[6]] <- dplyr::slice(tmp2[[6]],1:(nrow(tmp2[[6]])-1)) # Remove 1 duplicate rows
-tmp2[[7]] <- dplyr::slice(tmp2[[7]],1:(nrow(tmp2[[7]])-1)) # Remove 1 duplicate rows
 bdg <- do.call(rbind, tmp2)
 
 # Patch
 # tmp1 <- lapply(pre, function(x) sprintf("%s_patch.daily", x))
 # tmp2 <- lapply(tmp1, function(x) read.table(x, header = T))
-# tmp2[[1]] <- dplyr::slice(tmp2[[1]],1:(nrow(tmp2[[1]])-1)) # Remove 1 duplicate rows
 # pd <- do.call(rbind, tmp2)
 # 
 # Patch grow
 # tmp1 <- lapply(pre, function(x) sprintf("%s_grow_patch.daily", x))
 # tmp2 <- lapply(tmp1, function(x) read.table(x, header = T))
-# tmp2[[1]] <- dplyr::slice(tmp2[[1]],1:(nrow(tmp2[[1]])-1)) # Remove 1 duplicate rows
 # pdg <- do.call(rbind, tmp2)
 
 # Canopy stratum
 tmp1 <- lapply(pre, function(x) sprintf("%s_stratum.daily", x))
 tmp2 <- lapply(tmp1, function(x) read.table(x, header = T))
-tmp2[[1]] <- dplyr::slice(tmp2[[1]],1:(nrow(tmp2[[1]])-2)) # Remove 2 duplicate rows
-tmp2[[2]] <- dplyr::slice(tmp2[[2]],1:(nrow(tmp2[[2]])-2)) # Remove 1 duplicate rows
-tmp2[[3]] <- dplyr::slice(tmp2[[3]],1:(nrow(tmp2[[3]])-2)) # Remove 1 duplicate rows
-tmp2[[4]] <- dplyr::slice(tmp2[[4]],1:(nrow(tmp2[[4]])-2)) # Remove 1 duplicate rows
-tmp2[[5]] <- dplyr::slice(tmp2[[5]],1:(nrow(tmp2[[5]])-2)) # Remove 1 duplicate rows
-tmp2[[6]] <- dplyr::slice(tmp2[[6]],1:(nrow(tmp2[[6]])-2)) # Remove 1 duplicate rows
-tmp2[[7]] <- dplyr::slice(tmp2[[7]],1:(nrow(tmp2[[7]])-2)) # Remove 1 duplicate rows
 cd <- do.call(rbind, tmp2)
 
 # Canopy stratum grow
 tmp1 <- lapply(pre, function(x) sprintf("%s_grow_stratum.daily", x))
 tmp2 <- lapply(tmp1, function(x) read.table(x, header = T))
-tmp2[[1]] <- dplyr::slice(tmp2[[1]],1:(nrow(tmp2[[1]])-2)) # Remove 2 duplicate rows
-tmp2[[2]] <- dplyr::slice(tmp2[[2]],1:(nrow(tmp2[[2]])-2)) # Remove 1 duplicate rows
-tmp2[[3]] <- dplyr::slice(tmp2[[3]],1:(nrow(tmp2[[3]])-2)) # Remove 1 duplicate rows
-tmp2[[4]] <- dplyr::slice(tmp2[[4]],1:(nrow(tmp2[[4]])-2)) # Remove 1 duplicate rows
-tmp2[[5]] <- dplyr::slice(tmp2[[5]],1:(nrow(tmp2[[5]])-2)) # Remove 1 duplicate rows
-tmp2[[6]] <- dplyr::slice(tmp2[[6]],1:(nrow(tmp2[[6]])-2)) # Remove 1 duplicate rows
-tmp2[[7]] <- dplyr::slice(tmp2[[7]],1:(nrow(tmp2[[7]])-2)) # Remove 1 duplicate rows
 cdg <- do.call(rbind, tmp2)
 
 # Re-export
-bd_path <- c("ws_p301/out/1.3_p301_basin.daily")
-bdg_path <- c("ws_p301/out/1.3_p301_grow_basin.daily")
-cd_path <- c("ws_p301/out/1.3_p301_stratum.daily")
-cdg_path <- c("ws_p301/out/1.3_p301_grow_stratum.daily")
+bd_path <- c("ws_p301/out/1.6_p301_basin.daily")
+bdg_path <- c("ws_p301/out/1.6_p301_grow_basin.daily")
+cd_path <- c("ws_p301/out/1.6_p301_stratum.daily")
+cdg_path <- c("ws_p301/out/1.6_p301_grow_stratum.daily")
 
 write.table(bd, file = bd_path, row.names = FALSE, col.names = TRUE, quote=FALSE, sep="  ")
 write.table(bdg, file = bdg_path, row.names = FALSE, col.names = TRUE, quote=FALSE, sep="  ")
@@ -588,4 +455,6 @@ write.table(cdg, file = cdg_path, row.names = FALSE, col.names = TRUE, quote=FAL
 # ---------------------------------------------------------------------
 
 beep(1)
+
+
 

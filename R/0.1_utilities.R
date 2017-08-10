@@ -29,7 +29,7 @@ biomass_removal_by_canopy <- function(world_name_in, world_name_out, canopy_defa
   change_flag <- 0
   reduction_mult <- 1 - (reduction_percent/100)
   for (aa in seq_len(nrow(worldfile))){
-    if (aa%%1000 == 0 ){print(paste("Worldfile line", aa, "of", nrow(worldfile)))} # Counter
+    if (aa%%10000 == 0 ){print(paste("Worldfile line", aa, "of", nrow(worldfile)))} # Counter
 
     if (worldfile[aa,2] == "canopy_strata_ID" && worldfile[aa+1,1] == canopy_default_ID){
       change_flag <- 1
