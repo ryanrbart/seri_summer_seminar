@@ -1,10 +1,10 @@
 ---
 title: "SERI Fire Seminar - Initial Scenarios"
-output: word_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
 ```
 
 ## Introduction
@@ -30,7 +30,7 @@ Each simulation runs for 80-years, from 1941 to 2021. (The observed meteorogical
 
 ## Model Outputs
 
-Each scenario in RHESSys produces a timeseries of output for a number of variables. These variables are provided in two text files. The file basin_results.txt contains all variables expect for canopy specific variables which are found in canopy_results.txt.    
+Each scenario in RHESSys produces a timeseries of output for a number of variables. These variables are provided in two text files. The file basin_results.txt contains all non-canopy variables. Canopy-specific variables are found in canopy_results.txt.  
 
 **basin_results.txt**  
 * date  
@@ -50,7 +50,7 @@ Each scenario in RHESSys produces a timeseries of output for a number of variabl
 * photosyn - Photosynthesis (gC/m2)  
 * litter (gC/m2)  
 
-The file canopy_results.txt contains variables that the vegetation canopies. This file has an additional variable called canopy_layer that differentiates the upper and lower canopy for the watershed.
+The file canopy_results.txt contains variables related to the two vegetation canopy. This file has an additional variable called canopy_layer that differentiates the upper and lower canopy for the watershed.  
 
 **canopy_results.txt**  
 * date  
@@ -67,12 +67,11 @@ The file canopy_results.txt contains variables that the vegetation canopies. Thi
 
 ## Potential Additional Scenarios
 
-There are a number of options for selecting additional scenarios for addressing your research question. Changes that are available include:  
-* Modifying the climate sequence (precipitation and/or temperature)  
-* Change the type of fuels treatments  (for example, overstory vs understory)  
-* Change the timing of fuels treatments  
-* Change the size of fuels treatments  
-
+There are a number of options for selecting additional scenarios for addressing your research question. Changes include:  
+* Modifying the climate sequence. (precipitation and/or temperature).  
+* Changing the type of fuels treatments (for example, overstory vs understory).  
+* Changing the timing of fuels treatments.  
+* Changing the size of fuels treatments.  
 
 ## Analyze scenarios in R
 
@@ -90,14 +89,14 @@ basin_results$date <- as.Date(basin_results$date)
 canopy_results$date <- as.Date(canopy_results$date)
 ```
 
-Let's plot how streamflow differs between the two scenarios. Note that two scenarios are colored differently.
+Plot how streamflow differs between the two scenarios. Note that two scenarios are colored differently.
 
 ``` {r streamflow}
 ggplot(basin_results) +
   geom_line(aes(x=date, y=streamflow, color=as.factor(scenario)))
 ```
 
-There is a lot of data, which makes it hard to evaluate. Let's group the data by wateryear.
+There is a lot of data on the x-axis, which makes it hard to evaluate. Let's group the data by wateryear.
 
 ``` {r streamflow_wy}
 basin_results_groups <- dplyr::group_by(basin_results, wy, scenario)
@@ -128,8 +127,7 @@ ggplot(basin_results_wy) +
   geom_line(aes(x=wy, y=streamflow_wy, color=as.factor(scenario)))
 ```
 
-
-Now lets plot above-ground carbon for both scenarios. Since there are two canopies, we have to differentiate between the upper and lower canopy, in addition to scenarios.  
+Now plot above-ground carbon for both scenarios. Since there are two canopies, we have to differentiate between the upper and lower canopy, in addition to scenarios.  
 
 ``` {r above_ground_carbon}
 ggplot(canopy_results) +
